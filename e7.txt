@@ -1,0 +1,18 @@
+from scipy import stats
+import math
+
+mean_A, std_A, n_A = 1000, 100, 30
+mean_B, std_B, n_B = 950, 120, 30
+alpha = 0.05
+
+t = (mean_A - mean_B) / math.sqrt(std_A**2/n_A + std_B**2/n_B)
+
+df = (std_A**2/n_A + std_B**2/n_B)**2 / (
+    (std_A**4 / (n_A**2 * (n_A-1))) +
+    (std_B**4 / (n_B**2 * (n_B-1)))
+)
+
+p = 2 * (1 - stats.t.cdf(abs(t), df))
+
+print(f"T = {t:.3f}\nDF = {df:.2f}\nP = {p:.5f}")
+print("Reject H₀" if p < alpha else "Fail to reject H₀")
